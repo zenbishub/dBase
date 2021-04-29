@@ -10,7 +10,7 @@ class dbGenerator {
 	
 
 	
-	public function __construct(){
+public function __construct(){
 		
 		//DB4185644		
 		$this->db_name = "DB_Name";
@@ -35,13 +35,13 @@ public function query($q){
 					}else{
 					$exe=mysqli_query($connection,$q);
 					printf("Error: %s<br>", mysqli_errno($connection));
+				return $exe;
 			}
-	return $exe;
-} catch (Exception $e) {
+	
+			} catch (Exception $e) {
   					echo $e->errorMessage();
-				}
-			
-    }
+			}
+}
 	
 public function select($arr){
 		try {
@@ -51,9 +51,9 @@ public function select($arr){
 				return $array;
 			} catch (Exception $e) {
   					echo $e->errorMessage();
-				}
+			}
 				
-    }
+}
 
 	
 public function showAllTables(){
@@ -73,7 +73,7 @@ public function showAllTables(){
 		
 		} catch (Exception $e) {
 				echo $e->errorMessage();
-			}
+		}
 
 }
 
@@ -198,7 +198,7 @@ public  function showTableColumns(){
 public function updateValues(){
 	
 	if(isset($_REQUEST['update_values'])){
-			$tbl = $_REQUEST['update_values'];
+		$tbl = $_REQUEST['update_values'];
 			unset($_POST['update_values']);
 			$upd="";
 			
@@ -386,32 +386,32 @@ if(isset($_REQUEST['save_config'])){
 
 }
 
-	public  function deleteTable(){
+public  function deleteTable(){
 
-if(isset($_REQUEST['deleteTable'])){
-	$q="DROP TABLE `".$_REQUEST['deleteTable']."`";
-	$this->query($q);
-	echo "<div class=\"output-message\">Tabelle wurde gelöscht | <a href=\"?overview=1\">Aktualisieren</a></div>";
-	}
-	
-	}
-	
-	public  function clearTable(){
+	if(isset($_REQUEST['deleteTable'])){
+		$q="DROP TABLE `".$_REQUEST['deleteTable']."`";
+		$this->query($q);
+		echo "<div class=\"output-message\">Tabelle wurde gelöscht | <a href=\"?overview=1\">Aktualisieren</a></div>";
+		}
 
-if(isset($_REQUEST['clearTable'])){
-	$q="TRUNCATE `".$_REQUEST['clearTable']."`";
-	$this->query($q);
-	echo "<div class=\"output-message\">Tabelle wurde geleert | <a href=\"?overview=1\">Aktualisieren</a></div>";
-	}
+		}
+
+		public  function clearTable(){
+
+	if(isset($_REQUEST['clearTable'])){
+		$q="TRUNCATE `".$_REQUEST['clearTable']."`";
+		$this->query($q);
+		echo "<div class=\"output-message\">Tabelle wurde geleert | <a href=\"?overview=1\">Aktualisieren</a></div>";
+		}
+
+}
 	
-	}
-	
-	public  function editStructureTable(){
+public  function editStructureTable(){
 	
 	if(isset($_REQUEST['structure'])){
 		
-		$q   	= "SHOW COLUMNS FROM ".$_REQUEST['structure']."";
-		$arr	= $this->query($q);
+	$q   	= "SHOW COLUMNS FROM ".$_REQUEST['structure']."";
+	$arr	= $this->query($q);
 	$exe = mysqli_fetch_assoc($arr);
 	do{$t[]=$exe; }while($exe = mysqli_fetch_assoc($arr));
 	
@@ -472,20 +472,17 @@ if(isset($_REQUEST['clearTable'])){
 		echo "</div>";
 		}
 
-	}
+}
 	
-	public function saveStructureChanges(){
+public function saveStructureChanges(){
 	
 	if(isset($_REQUEST['save_changes'])){
 		
 		$q   	= "SHOW COLUMNS FROM ".$_REQUEST['structure']."";
 		$arr	= $this->query($q);
 		$exe = mysqli_fetch_assoc($arr);
-	do{$t[]=$exe; }while($exe = mysqli_fetch_assoc($arr));
+		do{$t[]=$exe; }while($exe = mysqli_fetch_assoc($arr));
 	
-	
-	
-		
 		if($_REQUEST['Null']=="NO"){$_REQUEST['Null']="NOT NULL";}
 		if($_REQUEST['Null']=="YES"){$_REQUEST['Null']="NULL";}
 		if($_REQUEST['Extra']=="auto_increment"){$_REQUEST['Extra']="AUTO_INCREMENT";}
@@ -501,7 +498,7 @@ if(isset($_REQUEST['clearTable'])){
 	 
 	}
 	
-	public function addColumn(){
+public function addColumn(){
 	
 	if(isset($_REQUEST['add_column-tbl'])){
 		
@@ -513,9 +510,9 @@ if(isset($_REQUEST['clearTable'])){
 		
 		}
 	 
-	}
+}
 	
-	public function deleteColumn(){
+public function deleteColumn(){
 	
 	if(isset($_REQUEST['drop_column'])){
 		
@@ -524,9 +521,9 @@ if(isset($_REQUEST['clearTable'])){
 	echo "<div class=\"output-message\">gespeichert | <a href=\"?structure=".$_REQUEST['drop_column']."\">Aktualisieren</a></div>";
 	}
 	
-	}
+}
 	
-	public function addValues(){
+public function addValues(){
 	
 	if(isset($_REQUEST['structure'])){
 	echo "<hr>";
@@ -558,9 +555,9 @@ if(isset($_REQUEST['clearTable'])){
 		}
 	}
 	
-	}
+}
 	
-	public function insertValues(){
+public function insertValues(){
 		
 		if(isset($_REQUEST['insert_values'])){
 			$tbl = $_REQUEST['insert_values'];
@@ -578,9 +575,9 @@ if(isset($_REQUEST['clearTable'])){
 			echo $q="INSERT INTO `".$tbl."`($clm)VALUES($vlm)";
 			$this->query($q);
 			echo "<div class=\"output-message\">gespeichert | <a href=\"?structure=".$tbl."\">Aktualisieren</a></div>";
-			}
-		
 		}
+		
+}
 
 public function generatorAufruf(){
 	$this->showAllTables();
@@ -588,15 +585,14 @@ public function generatorAufruf(){
 public function sqlForm(){
 		if(isset($_REQUEST['sqlaction'])){
 			
-			echo "<div class='sql-result mr-5'>";
-			echo "<h5>SQL-Code ausführen</h5>";
-			echo "<hr>";
+		echo "<div class='sql-result mr-5'>";
+		echo "<h5>SQL-Code ausführen</h5>";
+		echo "<hr>";
 		echo "<form method='post'>";
 		echo "<textarea name='sqlcode' class='form-control sql-textarea col-8' placeholder='hier SQL-Code'></textarea>";
 		echo "<input type='hidden' name='dosqlcode' value='1'>";
 		echo "<button class='btn btn-info mt-2'>ok</button>";
 		echo "</form>";
-		
 		echo "</div>";
 		$this->doSqlCode();
 		}
