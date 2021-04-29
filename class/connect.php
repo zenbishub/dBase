@@ -15,7 +15,7 @@ class connect{
 	public $sended;
 	public function __construct(){
 		session_start();
-			$this->dbase = "DB4185644";
+			$this->dbase = "YourDBHOST";
 			$this->host = "localhost";
 			$this->user = "root";
 			$this->pass = "";
