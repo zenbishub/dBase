@@ -28,7 +28,7 @@ public  function htmlOutput(){
 		<script type=\"text/javascript\" src=\"js/db-generator-scrpits.js\"></script>
 		<script type='text/javascript' src='bootstrap/js/bootstrap.min.js'></script>
 		<link rel=\"stylesheet\" href='bootstrap/css/bootstrap.min.css'>
-		<link rel=\"stylesheet\" type=\"text/css\" href=\"../icon-font/font-awesome.min.css\">
+		<link rel=\"stylesheet\" type=\"text/css\" href=\"icon-font/font-awesome.min.css\">
 		<link rel=\"stylesheet\"  href=\"css/db-generator-style.css\" media=\"all\">
 		</head>
 		<body>

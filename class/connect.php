@@ -15,14 +15,14 @@ class connect{
 	public $sended;
 	public function __construct(){
 		session_start();
-			$this->dbase = "YourDBHOST";
+			$this->dbase = "DBname";
 			$this->host = "localhost";
 			$this->user = "root";
 			$this->pass = "";
 			$this->hoststring = "mysql:host=".$this->host.";dbname=".$this->dbase.";";
 			$this->pdo = $this->doConnect();
 			//$this->base = "CRUD/";
-			$this->base = "http://".$_SERVER['HTTP_HOST']."/CLONE/";
+			//$this->base = "http://".$_SERVER['HTTP_HOST']."/CLONE/";
 			//Achtung! bitte in .htaccess den Basepath auch ändern
 			
 			error_reporting(0);
