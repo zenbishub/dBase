@@ -4,6 +4,7 @@ require_once ("class/class-db-generator.php");
  class output extends dbGenerator {
 
 public function __construct(){
+	session_start();
 	parent::__construct();
 	
 }
@@ -65,11 +66,8 @@ public  function htmlOutput(){
 		$this->clearTable();
 		
 		echo"</div></div>
-		</body>
-</html>";
+		</body></html>";
 		 }
-	
-	
 	 
 	 }
 	$o = new output();

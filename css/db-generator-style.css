@@ -26,6 +26,7 @@ div#leftbar {
 	position: fixed;
 	height: 100%;
 	overflow: auto;
+	padding-bottom: 5em;
 }
 div#right-content {
 	padding: .5em;
@@ -81,7 +82,6 @@ ul#allTables {
 	font-size: 0.8em;
 }
 #overview-options {
-	margin-left: 2em;
 	background-color: beige;
 	padding: 2em;
 	font-size: .8em;

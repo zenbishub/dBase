@@ -1,22 +1,21 @@
 <?php
-require_once 'connect.php';
 
-class dbGenerator extends connect{
+class dbGenerator {
 	
 	public $db_host;
 	public $db_name;
 	public $db_username;
 	public $db_password;
 	public $daten;
+	
 
 	
 	public function __construct(){
 		
-		parent::__construct();
-		$this->db_name = $this->dbase;
-		$this->db_host = $this->host;
-		$this->db_username = $this->user;
-		$this->db_password = $this->pass;
+		$this->db_name = "DB4185644";
+		$this->db_host = "localhost";
+		$this->db_username = "root";
+		$this->db_password = "";
 		mysqli_report(MYSQLI_REPORT_STRICT);
 		//error_reporting(-1);
 		} 
@@ -80,8 +79,10 @@ public function showAllTables(){
 public  function showTableColumns(){
 	
 	if(isset($_REQUEST['tb'])){
+		$order="";
+	extract($_REQUEST);
 		
-	$q   	= "SHOW COLUMNS FROM ".$_REQUEST['tb']."";
+	$q   	= "SHOW COLUMNS FROM ".$tb."";
 	$arr	= $this->query($q);
 	$exe = mysqli_fetch_assoc($arr);
 	
@@ -101,15 +102,18 @@ public  function showTableColumns(){
 		}
 		
 		echo "<div id=\"editStructureTable\">
-		<a href=\"?structure=".$_REQUEST['tb']."\" class='btn btn-info text-white'>bearbeiten</a>
+		<a href=\"?structure=".$tb."\" class='btn btn-info text-white'>bearbeiten</a>
 		</div>";
-		$num = count($this->select("SELECT * FROM ".$_REQUEST['tb']));
+		$num = count($this->select("SELECT * FROM ".$tb));
 		$maxrow = 10;
 		$pagins = ceil($num/$maxrow);
+		$curr=0;
+		$orderby="ASC";
+		$by="id";
 		
-	$_REQUEST['next']?$curr=$_REQUEST['next']*$maxrow:$curr=0;
-	$_REQUEST['order']?$orderby=$_REQUEST['order']:$orderby="ASC";
-	$_REQUEST['by']?$by=$_REQUEST['by']:$by="id";
+	if(isset($_REQUEST['next'])){$curr=$_REQUEST['next']*$maxrow;}
+	if(isset($_REQUEST['order'])){$orderby=$_REQUEST['order'];}
+	if(isset($_REQUEST['by'])){$by=$_REQUEST['by'];}
 	
 		echo $s = "SELECT * FROM ".$_REQUEST['tb']."  ORDER by $by $orderby LIMIT $curr,$maxrow";
 		echo "<br>";
@@ -118,17 +122,17 @@ public  function showTableColumns(){
 					echo '<nav aria-label="Page navigation example">
 				<ul class="pagination">
 					<li class="page-item">
-						<a href="index.php?tb='.$_REQUEST['tb'].'&next='.($_REQUEST['next']-1).'"" aria-label="Previous" class="page-link">
+						<a href="index.php?tb='.$tb.'&next='.($next-1).'"" aria-label="Previous" class="page-link">
 							<span aria-hidden="true">&laquo;</span>
 						</a>
 					</li>';
 					$i=1;do{
-					echo '<li class="page-item"><a href="index.php?tb='.$_REQUEST['tb'].'&next='.$i.'" class="page-link">'.$i.'</a></li>';
+					echo '<li class="page-item"><a href="index.php?tb='.$tb.'&next='.$i.'" class="page-link">'.$i.'</a></li>';
 					
 					$i++;
 					}while($i<$pagins);
 					echo '<li class="page-item">
-						<a href="index.php?tb='.$_REQUEST['tb'].'&next='.($_REQUEST['next']+1).'"" aria-label="Next" class="page-link">
+						<a href="index.php?tb='.$tb.'&next='.($next+1).'"" aria-label="Next" class="page-link">
 							<span aria-hidden="true">&raquo;</span>
 						</a>
 					</li>
@@ -140,7 +144,7 @@ public  function showTableColumns(){
 		echo "<div class=\"row mb-5\">";
 		echo "<div class='font-weight-bold'>ORDER</div>";	
 			foreach($t as $k){
-			 echo "<div class='col small text-center'><a href='".$_REQUEST['tb']."' data='".$_REQUEST['order']."' class='link orderrows' alt='".$k['Field']."'>".$k['Field']."</a></div>";
+			 echo "<div class='col small text-center'><a href='".$tb."' data='".$order."' class='link orderrows' alt='".$k['Field']."'>".$k['Field']."</a></div>";
 		}
 		echo "</div>";
 			
@@ -165,7 +169,7 @@ public  function showTableColumns(){
 			echo  "<td><textarea class='form-control' name=\"".$key."\">".$value."</textarea></td>";
 			
 			}
-			echo "<td><input type=\"hidden\" name=\"update_values\" value=\"".$_REQUEST['tb']."\">
+			echo "<td><input type=\"hidden\" name=\"update_values\" value=\"".$tb."\">
 			<input type=\"hidden\" value=\"".$dsatz['id']."\" name=\"id\"><button class='btn btn-info'>ändern</button>
 			</td>";
 			
@@ -178,7 +182,7 @@ public  function showTableColumns(){
 			echo "<div class='col-1'>";
 			echo "<table>";
 			echo "<tr><th>Action</th></tr>";
-			echo "<form method=\"post\"><tr><td><input type=\"hidden\" name=\"tbl\" value=\"".$_REQUEST['tb']."\">
+			echo "<form method=\"post\"><tr><td><input type=\"hidden\" name=\"tbl\" value=\"".$tb."\">
 			<input type=\"hidden\" name=\"deleterow\" value=\"".$dsatz['id']."\"><button class='btn btn-info mt-2'><i class='fa fa-trash fa-fw'></i></button></td></tr></form>";
 			echo "</table>";
 			echo "</div>";
@@ -190,7 +194,7 @@ public  function showTableColumns(){
 	}
 }
 
-	public function updateValues(){
+public function updateValues(){
 	
 	if(isset($_REQUEST['update_values'])){
 			$tbl = $_REQUEST['update_values'];
@@ -209,7 +213,7 @@ public  function showTableColumns(){
 	
 	}
 
-	public function deleteRow(){
+public function deleteRow(){
 	if(isset($_REQUEST['deleterow'])){
 		$q = "DELETE FROM `".$_REQUEST['tbl']."` WHERE id =".$_REQUEST['deleterow']."";
 		$this->query($q);
@@ -217,24 +221,24 @@ public  function showTableColumns(){
 		}
 	}
 
-	public  function showOverview(){
+public  function showOverview(){
 	
 	if(isset($_REQUEST['overview'])){
 		$q = "SHOW TABLES";
-$arr= $this->query($q);
-$exe = mysqli_fetch_assoc($arr);
+		$arr= $this->query($q);
+		$exe = mysqli_fetch_assoc($arr);
 
- do{$t[]=$exe; }while($exe = mysqli_fetch_assoc($arr));
- echo "<h5>Tabellen Aktionen</h5>"; 
- echo "<hr>";
-echo "<ul id=\"overview-options\">"; 
-foreach($t as $k){
-	
-	 foreach((array)$k as $tb){
-		 echo "<li>".$tb."  <span class=\"options\"><a href=\"?deleteTable=$tb\">löschen</a> | <a href=\"?clearTable=$tb\">leeren</a></span></li>";
-		 }
-	}
-echo "</ul>";
+ 		do{$t[]=$exe; }while($exe = mysqli_fetch_assoc($arr));
+		echo "<h5>Tabellen Aktionen</h5>"; 
+		echo "<hr>";
+		echo "<ul id=\"overview-options\" class='container p-4'>"; 
+		foreach($t as $k){
+
+			 foreach((array)$k as $tb){
+				 echo "<li>".$tb."  <span class=\"options\"><a href=\"?deleteTable=$tb\">löschen</a> | <a href=\"?clearTable=$tb\">leeren</a></span></li>";
+				 }
+			}
+		echo "</ul>";
 		
 		}
 	}
