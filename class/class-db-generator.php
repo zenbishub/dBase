@@ -12,7 +12,8 @@ class dbGenerator {
 	
 	public function __construct(){
 		
-DB4185644		$this->db_name = "DB_Name";
+		//DB4185644		
+		$this->db_name = "DB_Name";
 		$this->db_host = "localhost";
 		$this->db_username = "root";
 		$this->db_password = "";
