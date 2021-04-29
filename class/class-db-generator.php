@@ -12,8 +12,8 @@ class dbGenerator {
 	
 	public function __construct(){
 		
-		$this->db_name = "DB4185644";
-		$this->db_host = "localhost";
+		$this->db_name = "DB_Name";
+DB4185644		$this->db_host = "localhost";
 		$this->db_username = "root";
 		$this->db_password = "";
 		mysqli_report(MYSQLI_REPORT_STRICT);
